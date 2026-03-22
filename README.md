@@ -1,4 +1,4 @@
-# comfyui-id-lora-ltx
+# comfyui-id-lora-ltx2.3
 
 ComfyUI custom nodes for **ID-LoRA-2.3** inference — audio+video generation with speaker identity transfer, built on top of LTX-2.3. Supports both **one-stage** (single resolution) and **two-stage** (2x spatial upsampling) pipelines.
 
@@ -46,9 +46,22 @@ An optional **HQ mode** uses the res2s second-order sampler instead of Euler for
 - **GPU**: NVIDIA GPU with >=24 GB VRAM (48 GB recommended for non-quantized; 80 GB recommended for two-stage non-quantized at high resolutions)
 - **Python**: 3.10+
 - **ComfyUI**: Recent version with `comfy_api.latest` support
-- **Disk**: ~51 GB for one-stage models, ~60 GB for two-stage models (additional upsampler + distilled LoRA)
+- **Disk**: ~67 GB for one-stage models, ~75 GB for two-stage models (additional upsampler + distilled LoRA)
 
 ## Installation
+
+### 0. Install ComfyUI dependencies
+
+If you haven't done so already, install ComfyUI's own requirements first:
+
+```bash
+pip install -r ComfyUI/requirements.txt
+```
+
+> **Important:** ComfyUI may install `transformers` 5.x, which is incompatible with ID-LoRA. After installing ComfyUI requirements, pin to the latest 4.x release:
+> ```bash
+> pip install 'transformers>=4.52,<5'
+> ```
 
 ### 1. Clone ID-LoRA
 
@@ -71,7 +84,7 @@ This downloads all required models from HuggingFace:
 | Model | HuggingFace repo | Size |
 |-------|-----------------|------|
 | LTX-2.3 base checkpoint | `Lightricks/LTX-2.3` | ~44 GB |
-| Gemma 3 12B text encoder | `google/gemma-3-12b-it-qat-q4_0-unquantized` | ~30 GB |
+| Gemma 3 12B text encoder | `google/gemma-3-12b-it-qat-q4_0-unquantized` | ~23 GB |
 | ID-LoRA CelebV-HQ weights | `AviadDahan/LTX-2.3-ID-LoRA-CelebVHQ-3K` | ~1.1 GB |
 | ID-LoRA TalkVid weights | `AviadDahan/LTX-2.3-ID-LoRA-TalkVid-3K` | ~1.1 GB |
 
@@ -80,7 +93,7 @@ For two-stage, also download (included in the download script):
 | Model | HuggingFace repo | Size |
 |-------|-----------------|------|
 | Spatial upsampler | `Lightricks/LTX-2.3` | ~1 GB |
-| Distilled LoRA | `Lightricks/LTX-2.3` | ~7.6 GB |
+| Distilled LoRA | `Lightricks/LTX-2.3` | ~7.1 GB |
 
 > **Note:** Gemma requires accepting the license at https://huggingface.co/google/gemma-3-12b-it-qat-q4_0-unquantized and logging in with `huggingface-cli login` before downloading.
 
@@ -134,8 +147,8 @@ In ComfyUI, go to **Browse Templates** and look for **comfyui-id-lora-ltx** to l
 The example workflows use `poster_image.png` (first frame) and `reference.mp3` (speaker reference audio), which are included in the `example_inputs/` directory. Copy them into ComfyUI's `input/` folder so the LoadImage and LoadAudio nodes can find them:
 
 ```bash
-cp ComfyUI/custom_nodes/comfyui-id-lora-ltx/example_inputs/poster_image.png ComfyUI/input/
-cp ComfyUI/custom_nodes/comfyui-id-lora-ltx/example_inputs/reference.mp3 ComfyUI/input/
+cp ComfyUI/custom_nodes/ID-LoRA-LTX2.3-ComfyUI/example_inputs/poster_image.png ComfyUI/input/
+cp ComfyUI/custom_nodes/ID-LoRA-LTX2.3-ComfyUI/example_inputs/reference.mp3 ComfyUI/input/
 ```
 
 Then load either workflow template from ComfyUI and click **Queue Prompt** to run.
