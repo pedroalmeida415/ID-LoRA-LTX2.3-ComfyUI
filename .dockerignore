@@ -1,0 +1,9 @@
+.git
+.gitignore
+*.md
+!README.md
+.env
+models/
+__pycache__
+*.pyc
+.DS_Store
